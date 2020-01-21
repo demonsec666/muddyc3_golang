@@ -4,13 +4,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
 	"os"
 	"regexp"
 
 	"github.com/axgle/mahonia"
 )
 
-var AGENTS map[string]string
+var (
+	cmd    string
+	AGENTS map[string]string
+)
 
 //var COMMAND
 //TIME := list.New()
@@ -37,8 +41,8 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 		url_path, _ := regexp.Compile(`[A-Z]+`)
 		id := url_path.FindString(r.URL.Path)
 		fmt.Println(id)
-		AGENTS[id] = "id"
-		fmt.Println(AGENTS[id])
+		// AGENTS[id] = "ok"
+		// fmt.Println(AGENTS[id])
 
 	} else if url_cm.MatchString(r.URL.Path) {
 		//r.ParseForm()
@@ -50,7 +54,9 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 		if ok {
 			fmt.Println(value)
 		} else {
-			fmt.Fprintf(w, "REGISTER")
+			CMD()
+			fmt.Fprintf(w, cmd)
+
 		}
 
 	} else {
@@ -131,6 +137,16 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 //
 //}
 
+func CMD() {
+
+	fmt.Printf("Console_shell >")
+	fmt.Scanln(&cmd) //Scanln 扫描来自标准输入的文本，将空格分隔的值依次存放到后续的参数内，直到碰到换行。
+	// fmt.Scanf("%s %s", &firstName, &lastName)    //Scanf与其类似，除了 Scanf 的第一个参数用作格式字符串，用来决定如何读取。
+
+	fmt.Printf("%s \n", cmd)
+	fmt.Println(cmd)
+
+}
 func main() {
 	http.HandleFunc("/", sayhelloName) //设置访问的路由
 
