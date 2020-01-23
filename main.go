@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 	"regexp"
-
+	"io/ioutil"
 	"github.com/axgle/mahonia"
 )
 
@@ -77,8 +77,18 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 
 	} else if url_md.MatchString(r.URL.Path) {
 		//r.ParseForm()
-		// data := r.Form.Get("data")
-		fmt.Println("a")
+		//id判断日后扩展
+		web_data := r.Form.Get("data")
+		file_data, err := ioutil.ReadFile("./Modules/"+web_data)
+    if err != nil {
+        fmt.Println("read ps file err", err)
+        fmt.Fprintf(w, "")
+        //这里应该放一个默认模块
+        return
+    }else{
+    	fmt.Fprintf(w,string(file_data))
+    }
+		
 
 	} else {
 		//全都不匹配输出请求详细
