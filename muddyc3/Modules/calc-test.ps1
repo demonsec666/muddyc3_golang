@@ -1,4 +1,4 @@
-function calc-golang
+function calc-test
 {
 	start-process calc
 }
