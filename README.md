@@ -15,6 +15,9 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
 这是根据泄漏的ahmedkhlief  MuddyC3 C2的工作POC。现在包括以下功能：
 
 作者: WBGIII 
+
+   
+   
 蹭饭系列作者: Demon666
 
 # 
@@ -47,7 +50,7 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
 
 ## 待增加功能版：
 
-1. ```
+ ```
    1. 需修复upload bug
    2. 需增加help功能菜单
    3. 需增加 list-info、show command、use ID等相关功能上菜单
@@ -62,7 +65,7 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
 
 ## 用法：
 
-1. ```
+ ```
    1. go get github.com/axgle/mahonia
    2. go run main   （PORT:9090）
    3. 复制get.ps1 代码到客户端 （并修改ip和端口）
