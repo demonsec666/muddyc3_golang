@@ -121,10 +121,8 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 		
 	} else if url_img.MatchString(r.URL.Path){
 		//上传文件到服务端
-		//bug
-		//1.http里+会转义为空格
+		//bug 1.http里+会转义为空格
 		//2.post上传有限制比较小
-		//解决方法先这样反正解决方法比较多
 		web_data := r.Form.Get("data")
 		//decoded, _ := base64.StdEncoding.DecodeString(web_data)
 		//decodestr := string(decoded)

