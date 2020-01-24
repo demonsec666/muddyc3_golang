@@ -77,7 +77,15 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
 
    
 
+# 敬告(Notice):
++  仅供学习参考，做测试
 
++  不合理使用此项目所提供的功能而造成的任何直接或者间接的后果及损失， 均由使用者本人负责，即刻安全以及创作者不为此承担任何责任。
+
+
+</br>  For reference only, for testing 
+
+</br> Any direct or indirect consequences and losses arising from the abuse of the featuress provided by those  project  are due to the user himself, secist and the author does not accept any responsibility.
 
 
 [1]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/9311DF125870D1C86BF186D5AA8C532C.jpg
