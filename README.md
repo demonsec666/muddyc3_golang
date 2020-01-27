@@ -56,7 +56,7 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
 
 
 
-Demo : [](https://youtu.be/gD93kX_Eq_Y)  
+[Demo](https://youtu.be/gD93kX_Eq_Y)
 
 
 
