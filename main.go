@@ -246,8 +246,6 @@ func Scanf(a *string) {
 		os.Exit(0)
 		return
 		//系统退出
-	} else {
-		fmt.Println(help)
 	}
 	*a = string(data)
 

@@ -17,7 +17,7 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
 作者: WBGIII 
 
    
-   
+
 蹭饭系列作者: Demon666
 
 # 
@@ -52,7 +52,7 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
 
    
    
-   ```
+ ```
 
 ![enter description here][4]
 
@@ -64,10 +64,10 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
    3. 需增加 list-info、show command、use ID等相关功能上菜单
    4. 需增加 Tab键，展示命令
    5. 需增加back 功能
-   6. 需增加清屏功能
+ 
    
    
-   ```
+ ```
 
    
 
@@ -81,7 +81,7 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
    5. 或者在控制输入  load xxxx.ps1  or Download  serverfile  clientfile  
    6. load  即加载 moudle文件中的文件
    7. Donwload 需创建file文件，再使用命令Download  serverfile(指的是file下的文件 相对路径)  clientfile  （客户端的绝对路径）
-   ```
+ ```
 
    
 
@@ -96,7 +96,7 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
 +   Any direct or indirect consequences and losses arising from the abuse of the featuress provided by those  project  are due to the user himself, secist and the author does not accept any responsibility.
 
 
-  [1]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/CA7F0BB98761EF4426EB1D7FA7E223CD.jpg
-  [2]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/9311DF125870D1C86BF186D5AA8C532C.jpg
-  [3]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/2CA777D7D57FFD6C177C9261523B601E.jpg
-  [4]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/1580109742682.jpg 
+[1]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/CA7F0BB98761EF4426EB1D7FA7E223CD.jpg
+[2]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/9311DF125870D1C86BF186D5AA8C532C.jpg
+[3]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/2CA777D7D57FFD6C177C9261523B601E.jpg
+[4]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/1580109742682.jpg
