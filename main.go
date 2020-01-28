@@ -14,14 +14,20 @@ import (
 	"strings"
 	"time"
 
-	"github.com/axgle/mahonia"          //中文编码
+	"github.com/axgle/mahonia" //中文编码
+	"github.com/c-bata/go-prompt"  // 增加tab 下拉菜单
 	"github.com/olekukonko/tablewriter" //表格
 )
 
-const help = `
+const help_shell = `
 		help   帮助参数
    		info   列出操作系统参数
-		exit   退出
+		back   返回主页
+	 `
+const help = `
+		help   帮助参数
+   		shell  进入shell
+		back   返回主页
 	 `
 
 var (
@@ -238,12 +244,14 @@ func Scanf(a *string) {
 	} else if string(data) == "help" {
 		*a = ""
 
-		fmt.Println(help)
+		fmt.Println(help_shell)
 		return
 		//帮助参数
-	} else if string(data) == "exit" {
+	} else if string(data) == "back" {
 		*a = ""
-		os.Exit(0)
+		goto end //选择back 就跳转
+	end:
+		Options()
 		return
 		//系统退出
 	}
@@ -265,17 +273,47 @@ func clear() {
 	}
 	//定义系统清屏clear()
 }
+func completer(in prompt.Document) []prompt.Suggest { //一级菜单栏列表
+	s := []prompt.Suggest{
+		{Text: "shell"},
+		{Text: "help"},
+		{Text: "exit"},
+	}
+	return prompt.FilterHasPrefix(s, in.GetWordBeforeCursor(), true)
+}
 
+func Options() { //定义tab 下拉菜单选项参数
+	for true {
+		options := prompt.Input("SSF >", completer,
+			prompt.OptionPrefixTextColor(prompt.Red),                 //字体颜色
+			prompt.OptionPreviewSuggestionTextColor(prompt.Black),    //下拉菜单的字体
+			prompt.OptionSelectedSuggestionBGColor(prompt.LightGray), //下拉菜单的字背景
+			prompt.OptionSuggestionBGColor(prompt.DarkGray))          //菜单框背景
+		switch {
+		case options == "shell":
+			for true {
+
+				fmt.Print("Console_shell >")
+				Scanf(&cmd)
+
+			}
+		case options == "help":
+			fmt.Println(help)
+		case options == "exit":
+			os.Exit(0)
+			break
+		default:
+			fmt.Println("错误选项")
+
+		}
+	}
+
+}
 func main() {
 	http.HandleFunc("/", sayhelloName) //设置访问的路由
 
 	go http.ListenAndServe(":9090", nil) //设置监听的端口
 	clear()                              //系统清屏
-	for true {
-
-		fmt.Print("Console_shell >")
-		Scanf(&cmd)
-
-	}
+	Options()
 
 }
