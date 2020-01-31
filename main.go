@@ -223,7 +223,7 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 //打印全部主机信息
 func info_os() {
 
-	for _,v:=range AGENTS{
+	for k,v:=range AGENTS{
 		info := strings.Split(v, "**")
 		OS = info[0]
 		IP = info[1]
@@ -233,7 +233,7 @@ func info_os() {
 		username = info[5]
 		//定义 info 信息中的变量
 		data := [][]string{
-			[]string{ID, OS, IP, Arch, hostname, domain, username},
+			[]string{k, OS, IP, Arch, hostname, domain, username},
 		}
 		//将info信息做成表格
 		table := tablewriter.NewWriter(os.Stdout)
