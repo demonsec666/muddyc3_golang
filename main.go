@@ -311,7 +311,7 @@ func Session_id(id string) {
 		session_id=strings.Split(id," ")[1]
 		fmt.Printf("%s setting Interact session id => %s.\n", Blue("[*]"), session_id)
 	}else {
-		fmt.Printf("%s set session err",Red("[*] \n"))
+		fmt.Printf("%s set session err \n",Red("[*]"))
 	}
 
 
