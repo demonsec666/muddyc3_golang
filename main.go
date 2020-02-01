@@ -306,7 +306,11 @@ func completer(in prompt.Document) []prompt.Suggest { //一级菜单栏列表
 
 func Session_id(id string) {
 	Blue := color.New(color.FgBlue).SprintFunc()
-	session_id=strings.Split(id," ")[1]
+	if len(strings.Split(id," "))>1{
+		session_id=strings.Split(id," ")[1]
+	}
+
+
 	fmt.Printf("%s setting Interact session id => %s.\n", Blue("[*]"), session_id)
 }
 
