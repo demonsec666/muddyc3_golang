@@ -57,7 +57,15 @@ func GetRandomString(l int) string {
 	return string(result)
 }
 
+func replace(web_data string)string  {
+	reg, _ := regexp.Compile(" ")
+	data := reg.ReplaceAllString(web_data, "+")
+	return data
+	
+}
+
 func httpserver(w http.ResponseWriter, r *http.Request) {
+	//r.Body = http.MaxBytesReader(w, r.Body, MaxFileSize)
 	r.ParseForm()
 
 	//url正则
@@ -106,10 +114,9 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 
 		//re接收返回信息
 	} else if url_re.MatchString(r.URL.Path) {
-		web_data := r.Form.Get("data")
-		decoded, _ := base64.StdEncoding.DecodeString(web_data)
+		web_data := r.PostFormValue("data")
+		decoded, _ := base64.StdEncoding.DecodeString(replace(web_data))
 		decodestr := string(decoded)
-		fmt.Println("\n")
 		fmt.Println(decodestr)
 
 		//load加载ps模块
@@ -139,16 +146,12 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 
 		//img上传文件到服务端
 	} else if url_img.MatchString(r.URL.Path) {
-		//bug
-		//1.http里+会转义为空格
-		//2.post上传有限制比较小
-		//解决方法先这样反正解决方法比较多
 		web_data := r.Form.Get("data")
-		//decoded, _ := base64.StdEncoding.DecodeString(web_data)
+		decoded, _ := base64.StdEncoding.DecodeString(replace(web_data))
 		//decodestr := string(decoded)
 
 		file, _ := os.Create("./upload/" + GetRandomString(5))
-		file.WriteString(web_data)
+		file.Write(decoded)
 		file.Close()
 		fmt.Fprintf(w, ("ok upload"))
 

