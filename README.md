@@ -20,17 +20,19 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
 
 蹭饭系列作者: Demon666
 
+![enter description here][1]
+
 # 
 
 ## 1.代理重新连接
 
-![enter description here][1]
+![enter description here][2]
 
 
 
 ## 2. 加载模块
 
-![enter description here][2]
+![enter description here][3]
 
 ## 3. 发送命令和接收结果
 
@@ -42,7 +44,7 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
 
 ## 5.已实现Download 功能，但待修复upload功能（有部分bug）
 
-![enter description here][3]
+![enter description here][4]
 
 ## 已更新增加
  ```
@@ -54,17 +56,17 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
    
    
  ```
- 
-![enter description here][4]
-
 
 ![enter description here][5]
 
-[Demo](https://youtu.be/gD93kX_Eq_Y)
+
+![enter description here][6]
 
 
 
 
+
+[Demo](https://youtu.be/NWwOFiBzNXk)
 
 ## 待增加功能版：
 
@@ -104,8 +106,9 @@ golang 版 开源项目 https://github.com/demonsec666/muddyc3_golang
 +   Any direct or indirect consequences and losses arising from the abuse of the featuress provided by those  project  are due to the user himself, secist and the author does not accept any responsibility.
 
 
-  [1]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/CA7F0BB98761EF4426EB1D7FA7E223CD.jpg
-  [2]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/9311DF125870D1C86BF186D5AA8C532C.jpg
-  [3]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/2CA777D7D57FFD6C177C9261523B601E.jpg
-  [4]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/CD10755C877B212D160EBE7762FA7297.jpg 
-  [5]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/1580572393517.jpg 
+  [1]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/B49CE57927F122B7EA4921F47F321D77.jpg 
+  [2]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/CA7F0BB98761EF4426EB1D7FA7E223CD.jpg
+  [3]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/9311DF125870D1C86BF186D5AA8C532C.jpg
+  [4]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/2CA777D7D57FFD6C177C9261523B601E.jpg
+  [5]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/CD10755C877B212D160EBE7762FA7297.jpg
+  [6]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/1580572393517.jpg
