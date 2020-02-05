@@ -1,4 +1,4 @@
-# README
+# muddyc3_golang
 本项目是根据泄漏的ahmedkhlief MuddyC3 C2的POC使用golang编写的框架。原版框架地址：[muddyc3-Revived](https://github.com/ahmedkhlief/muddyc3-Revived)
 Demo请见：[Youtube](https://youtu.be/NWwOFiBzNXk)
 
