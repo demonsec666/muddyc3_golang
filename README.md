@@ -17,9 +17,9 @@ Demo请见：[Youtube](https://youtu.be/NWwOFiBzNXk)
 ![][6]
 
 # 开发人员名单
-[WBGIII](https://github.com/WBGlIl)
-[demonsec666](https://github.com/demonsec666)
-[c4dr01d](https://github.com/c4dr01d)
++ [WBGIII](https://github.com/WBGlIl)
++ [demonsec666](https://github.com/demonsec666)
++ [c4dr01d](https://github.com/c4dr01d)
 
 # 关于框架使用
 本框架仅供网络安全学习、参考以及合法测试，不合理使用本项目所提供之功能而造成的任何直接或间接的后果以及损失，均由使用者承担，即刻安全以及参加本项目的开发者不为此承担任何责任。
