@@ -1,114 +1,35 @@
-# 1.Pythonç‰ˆ
+# README
+±¾ÏîÄ¿ÊÇ¸ù¾İĞ¹Â©µÄahmedkhlief MuddyC3 C2µÄPOCÊ¹ÓÃgolang±àĞ´µÄ¿ò¼Ü¡£Ô­°æ¿ò¼ÜµØÖ·£º[muddyc3-Revived](https://github.com/ahmedkhlief/muddyc3-Revived)
+DemoÇë¼û£º[Youtube](https://youtu.be/NWwOFiBzNXk)
 
-Python  ç‰ˆ å¼€æºé¡¹ç›® https://github.com/ahmedkhlief/muddyc3-Revived
+# Ö÷Òª¹¦ÄÜ
+1. ½»»¥Ê½ÃüÁîĞĞ
+2. ¿É¼ÓÔØÄ£¿é
+3. ´´½¨Windows PowerShell¸ºÔØ
+4. Ô¶³ÌÉÏ´«ÏÂÔØ¹¦ÄÜ
 
+# ¿ò¼ÜÔËĞĞÍ¼Æ¬
+![][1]
+![][2]
+![][3]
+![][4]
+![][5]
+![][6]
 
+# ¿ª·¢ÈËÔ±Ãûµ¥
+[WBGIII](https://github.com/WBGlIl)
+[demonsec666](https://github.com/demonsec666)
+[c4dr01d](https://github.com/c4dr01d)
 
+# ¹ØÓÚ¿ò¼ÜÊ¹ÓÃ
+±¾¿ò¼Ü½ö¹©ÍøÂç°²È«Ñ§Ï°¡¢²Î¿¼ÒÔ¼°ºÏ·¨²âÊÔ£¬²»ºÏÀíÊ¹ÓÃ±¾ÏîÄ¿ËùÌá¹©Ö®¹¦ÄÜ¶øÔì³ÉµÄÈÎºÎÖ±½Ó»ò¼ä½ÓµÄºó¹ûÒÔ¼°ËğÊ§£¬¾ùÓÉÊ¹ÓÃÕß³Ğµ££¬¼´¿Ì°²È«ÒÔ¼°²Î¼Ó±¾ÏîÄ¿µÄ¿ª·¢Õß²»Îª´Ë³Ğµ£ÈÎºÎÔğÈÎ¡£
 
+This framework just use for cyber security research, reference and legitimate testing only.
+Any direct or indirect consequences and losses arising from the abuse of the features provided by this framework are due to the user himself, secist and author of this framework does not accept any responsibility.
 
-
-
-# 2.golangç‰ˆ
-
-golang ç‰ˆ å¼€æºé¡¹ç›® https://github.com/demonsec666/muddyc3_golang
-
-è¿™æ˜¯æ ¹æ®æ³„æ¼çš„ahmedkhlief  MuddyC3 C2çš„å·¥ä½œPOCã€‚ç°åœ¨åŒ…æ‹¬ä»¥ä¸‹åŠŸèƒ½ï¼š
-
-ä½œè€…: WBGIII 
-
-   
-
-è¹­é¥­ç³»åˆ—ä½œè€…: Demon666
-
-![enter description here][1]
-
-# 
-
-## 1.ä»£ç†é‡æ–°è¿æ¥
-
-![enter description here][2]
-
-
-
-## 2. åŠ è½½æ¨¡å—
-
-![enter description here][3]
-
-## 3. å‘é€å‘½ä»¤å’Œæ¥æ”¶ç»“æœ
-
-
-
-## 4. åˆ›å»ºPowershellè´Ÿè½½  ----ï¼ˆå·²å®ç°ä¸€åŠï¼Œè¿˜æœªå¢åŠ åˆ°æœåŠ¡ç«¯ï¼‰ç›®å‰åªæœ‰get.ps1  ä»£ç å¤åˆ¶åˆ°å®¢æˆ·ç«¯ï¼Œè¿›è¡Œæµ‹è¯•
-
-
-
-## 5.å·²å®ç°Download åŠŸèƒ½ï¼Œä½†å¾…ä¿®å¤uploadåŠŸèƒ½ï¼ˆæœ‰éƒ¨åˆ†bugï¼‰
-
-![enter description here][4]
-
-## å·²æ›´æ–°å¢åŠ 
- ```
-   1. help
-   2. info
-   3. exit
-   4. Interact with AGENT 
-   5.  session list 
-   
-   
- ```
-
-![enter description here][5]
-
-
-![enter description here][6]
-
-
-
-
-
-[Demo](https://youtu.be/NWwOFiBzNXk)
-
-## å¾…å¢åŠ åŠŸèƒ½ç‰ˆï¼š
-
- ```
- éœ€ä¿®å¤upload bug
-
-
- 
-   
-   
- ```
-
-   
-
-## ç”¨æ³•ï¼š
-
- ``` 
-   1. go get github.com/axgle/mahonia  go get github.com/olekukonko/tablewriter
-   2. go run main   ï¼ˆPORT:9090ï¼‰
-   3. å¤åˆ¶get.ps1 ä»£ç åˆ°å®¢æˆ·ç«¯ ï¼ˆå¹¶ä¿®æ”¹ipå’Œç«¯å£ï¼‰
-   4. åœ¨æ§åˆ¶å¯ç›´æ¥è¾“å…¥å‘½ä»¤
-   5. æˆ–è€…åœ¨æ§åˆ¶è¾“å…¥  load xxxx.ps1  or Download  serverfile  clientfile  
-   6. load  å³åŠ è½½ moudleæ–‡ä»¶ä¸­çš„æ–‡ä»¶
-   7. Donwload éœ€åˆ›å»ºfileæ–‡ä»¶ï¼Œå†ä½¿ç”¨å‘½ä»¤Download  serverfile(æŒ‡çš„æ˜¯fileä¸‹çš„æ–‡ä»¶ ç›¸å¯¹è·¯å¾„)  clientfile  ï¼ˆå®¢æˆ·ç«¯çš„ç»å¯¹è·¯å¾„ï¼‰
- ```
-
-   
-
-# æ•¬å‘Š(Notice):
-+  ä»…ä¾›å­¦ä¹ å‚è€ƒï¼Œåšæµ‹è¯•
-
-+  ä¸åˆç†ä½¿ç”¨æ­¤é¡¹ç›®æ‰€æä¾›çš„åŠŸèƒ½è€Œé€ æˆçš„ä»»ä½•ç›´æ¥æˆ–è€…é—´æ¥çš„åæœåŠæŸå¤±ï¼Œ å‡ç”±ä½¿ç”¨è€…æœ¬äººè´Ÿè´£ï¼Œå³åˆ»å®‰å…¨ä»¥åŠåˆ›ä½œè€…ä¸ä¸ºæ­¤æ‰¿æ‹…ä»»ä½•è´£ä»»ã€‚
-
-
-+   For reference only, for testing 
-
-+   Any direct or indirect consequences and losses arising from the abuse of the featuress provided by those  project  are due to the user himself, secist and the author does not accept any responsibility.
-
-
-  [1]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/B49CE57927F122B7EA4921F47F321D77.jpg 
-  [2]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/CA7F0BB98761EF4426EB1D7FA7E223CD.jpg
-  [3]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/9311DF125870D1C86BF186D5AA8C532C.jpg
-  [4]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/2CA777D7D57FFD6C177C9261523B601E.jpg
-  [5]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/CD10755C877B212D160EBE7762FA7297.jpg
-  [6]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/1580572393517.jpg
+[1]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/B49CE57927F122B7EA4921F47F321D77.jpg 
+[2]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/CA7F0BB98761EF4426EB1D7FA7E223CD.jpg
+[3]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/9311DF125870D1C86BF186D5AA8C532C.jpg
+[4]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/2CA777D7D57FFD6C177C9261523B601E.jpg
+[5]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/CD10755C877B212D160EBE7762FA7297.jpg
+[6]: https://demonsec666.oss-cn-qingdao.aliyuncs.com/1580572393517.jpg
