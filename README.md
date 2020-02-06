@@ -1,14 +1,21 @@
 # muddyc3_golang
-±¾ÏîÄ¿ÊÇ¸ù¾İĞ¹Â©µÄahmedkhlief MuddyC3 C2µÄPOCÊ¹ÓÃgolang±àĞ´µÄ¿ò¼Ü¡£Ô­°æ¿ò¼ÜµØÖ·£º[muddyc3-Revived](https://github.com/ahmedkhlief/muddyc3-Revived)
-DemoÇë¼û£º[Youtube](https://youtu.be/NWwOFiBzNXk)
+æœ¬é¡¹ç›®æ˜¯æ ¹æ®æ³„æ¼çš„ahmedkhlief MuddyC3 C2çš„POCä½¿ç”¨golangç¼–å†™çš„æ¡†æ¶ã€‚åŸç‰ˆæ¡†æ¶åœ°å€ï¼š[muddyc3-Revived](https://github.com/ahmedkhlief/muddyc3-Revived)
+Demoè¯·è§ï¼š[Youtube](https://youtu.be/NWwOFiBzNXk)
 
-# Ö÷Òª¹¦ÄÜ
-1. ½»»¥Ê½ÃüÁîĞĞ
-2. ¿É¼ÓÔØÄ£¿é
-3. ´´½¨Windows PowerShell¸ºÔØ
-4. Ô¶³ÌÉÏ´«ÏÂÔØ¹¦ÄÜ
+#WIKI
+https://github.com/demonsec666/muddyc3_golang/wiki
 
-# ¿ò¼ÜÔËĞĞÍ¼Æ¬
+ï¼ƒrelease
+https://github.com/demonsec666/muddyc3_golang/releases
+
+
+ï¼ƒä¸»è¦åŠŸèƒ½
+1. äº¤äº’å¼å‘½ä»¤è¡Œ
+2. å¯åŠ è½½æ¨¡å—
+3. åˆ›å»ºWindows PowerShellè´Ÿè½½
+4. è¿œç¨‹ä¸Šä¼ ä¸‹è½½åŠŸèƒ½
+
+# æ¡†æ¶è¿è¡Œå›¾ç‰‡
 ![][1]
 ![][2]
 ![][3]
@@ -16,13 +23,13 @@ DemoÇë¼û£º[Youtube](https://youtu.be/NWwOFiBzNXk)
 ![][5]
 ![][6]
 
-# ¿ª·¢ÈËÔ±Ãûµ¥
+# å¼€å‘äººå‘˜åå•
 + [WBGIII](https://github.com/WBGlIl)
 + [demonsec666](https://github.com/demonsec666)
 + [c4dr01d](https://github.com/c4dr01d)
 
-# ¹ØÓÚ¿ò¼ÜÊ¹ÓÃ
-±¾¿ò¼Ü½ö¹©ÍøÂç°²È«Ñ§Ï°¡¢²Î¿¼ÒÔ¼°ºÏ·¨²âÊÔ£¬²»ºÏÀíÊ¹ÓÃ±¾ÏîÄ¿ËùÌá¹©Ö®¹¦ÄÜ¶øÔì³ÉµÄÈÎºÎÖ±½Ó»ò¼ä½ÓµÄºó¹ûÒÔ¼°ËğÊ§£¬¾ùÓÉÊ¹ÓÃÕß³Ğµ££¬¼´¿Ì°²È«ÒÔ¼°²Î¼Ó±¾ÏîÄ¿µÄ¿ª·¢Õß²»Îª´Ë³Ğµ£ÈÎºÎÔğÈÎ¡£
+# å…³äºæ¡†æ¶ä½¿ç”¨
+æœ¬æ¡†æ¶ä»…ä¾›ç½‘ç»œå®‰å…¨å­¦ä¹ ã€å‚è€ƒä»¥åŠåˆæ³•æµ‹è¯•ï¼Œä¸åˆç†ä½¿ç”¨æœ¬é¡¹ç›®æ‰€æä¾›ä¹‹åŠŸèƒ½è€Œé€ æˆçš„ä»»ä½•ç›´æ¥æˆ–é—´æ¥çš„åæœä»¥åŠæŸå¤±ï¼Œå‡ç”±ä½¿ç”¨è€…æ‰¿æ‹…ï¼Œå³åˆ»å®‰å…¨ä»¥åŠå‚åŠ æœ¬é¡¹ç›®çš„å¼€å‘è€…ä¸ä¸ºæ­¤æ‰¿æ‹…ä»»ä½•è´£ä»»ã€‚
 
 This framework just use for cyber security research, reference and legitimate testing only.
 Any direct or indirect consequences and losses arising from the abuse of the features provided by this framework are due to the user himself, secist and author of this framework does not accept any responsibility.
