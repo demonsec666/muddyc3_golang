@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AlecAivazis/survey"
+	"github.com/AlecAivazis/survey/v2"
 	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
 
@@ -430,7 +430,7 @@ func completer(in prompt.Document) []prompt.Suggest { //一级菜单栏列表 Fi
 	return prompt.FilterHasPrefix(s, in.GetWordBeforeCursor(), true)
 }
 
-func del_session(id string)  {
+func del_session(id string) {
 	Blue := color.New(color.FgBlue).SprintFunc()
 	Red := color.New(color.FgRed).SprintFunc()
 	session_id = strings.Split(id, " ")[1]
@@ -438,7 +438,7 @@ func del_session(id string)  {
 		delete(AGENTS, session_id)
 		fmt.Printf("%s del Session id=> %s.\n", Blue("[*]"), session_id)
 	} else {
-		fmt.Printf("%s could not find it id  %s \n", Red("[*]"),session_id)
+		fmt.Printf("%s could not find it id  %s \n", Red("[*]"), session_id)
 	}
 }
 
@@ -476,7 +476,7 @@ func Options() { //定义tab 下拉菜单选项参数
 			fmt.Println(help)
 		} else if strings.Contains(options, "Interact") {
 			Session_id(options)
-		}else if  strings.Contains(options, "del"){
+		} else if strings.Contains(options, "del") {
 			del_session(options)
 		} else if options == "session list" {
 			info_os()
